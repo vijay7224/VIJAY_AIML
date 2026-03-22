@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f7fa;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="container mt-5">
+
+<h2 class="text-center mb-4">📂 File Management System</h2>
+
+<!-- Upload Section -->
+<div class="card p-4 mb-4">
+    <h5>Add Google Drive File</h5>
+
+    <form method="POST" action="/add">
+        <input type="text" name="filename" placeholder="Enter File Name" class="form-control mb-2" required>
+
+        <input type="text" name="link" placeholder="Paste Google Drive Link" class="form-control mb-2" required>
+
+        <select name="type" class="form-control mb-2">
+            <option value="pdf">PDF</option>
+            <option value="image">Image</option>
+        </select>
+
+        <button class="btn btn-primary w-100">Add File</button>
+    </form>
+</div>
+
+<!-- File List -->
+{% for file in files %}
+<div class="card p-3 mb-3">
+
+    <h5>{{ file.filename }}</h5>
+
+    {% if file.type == 'pdf' %}
+        <a href="/view/{{ file._id }}" class="btn btn-success btn-sm mt-2">📄 View PDF</a>
+        <a href="{{ file.download_url }}" class="btn btn-info btn-sm mt-2">⬇ Download</a>
+    {% else %}
+        <img src="{{ file.view_url }}" width="120" class="mt-2 rounded">
+        <br>
+        <a href="{{ file.view_url }}" target="_blank" class="btn btn-success btn-sm mt-2">🖼 View Image</a>
+    {% endif %}
+
+    <a href="/delete/{{ file._id }}" class="btn btn-danger btn-sm mt-2">❌ Delete</a>
+
+</div>
+{% endfor %}
+
+</body>
+</html>
